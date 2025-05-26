@@ -172,11 +172,11 @@ bool ScaraController::moveZ(float z)
                     _tmc2300->setVelocity(0);
                     return true;
                 }
-                // if (time++ >= timeOut)
-                // {
-                //   time = 0;
-                //   return false;
-                // }
+                if (time++ >= timeOut)
+                {
+                  time = 0;
+                  return false;
+                }
                 delay(1);
             }
         }
