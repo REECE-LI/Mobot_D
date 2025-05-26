@@ -3,3 +3,12 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+/.vscode/extensions.json
+/.vscode/settings.json
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/.gitignore
+/.idea/editor.xml
+/.idea/encodings.xml
+/.idea/GitCommitMessageStorage.xml
+/.idea/misc.xml
+/.idea/vcs.xml

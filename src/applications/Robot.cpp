@@ -228,7 +228,7 @@ void Robot::draw16x16(uint8_t ((*data)[2]))
   //mobot.moveArmZ(-1);
 }
 
-int16_t takePos4 = 100, takePos3 = 3450;
+int16_t takePos4 = 400, takePos3 = 3280;
 
 void Robot::givePen(DrawColor_t penId)
 {
@@ -241,12 +241,17 @@ void Robot::givePen(DrawColor_t penId)
   //发送换笔指令
   sendChangeCmd(penId, PenState_t::OPEN);
   //机械臂切换到取笔状态
-  sms_sts.WritePosEx(4, takePos4 + 1000, 1000, 200);
   sms_sts.WritePosEx(3, takePos3, 1000, 200);
+  delay(800);
+
+  sms_sts.WritePosEx(4, takePos4+1000, 1000, 200);
+  // sms_sts.WritePosEx(3, takePos3, 1000, 200);
   delay(1000);
   //移动到换笔地点
   moveChassisTo(_change.x, _change.y, _change.angle);
   //stopChassis();
+
+
 
   //发送换笔结构松开指令
   sms_sts.WritePosEx(4, takePos4, 1000, 200);
@@ -256,6 +261,7 @@ void Robot::givePen(DrawColor_t penId)
   {
     delay(50);
   }
+
 
   sendChangeCmd(penId, PenState_t::CLOSE);
 
