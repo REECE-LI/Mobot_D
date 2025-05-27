@@ -41,9 +41,14 @@ void Robot::init(void) {
   // _drawBuff[1] = orange_288;
   // _drawBuff[2] = yellow_288;
 
-  _drawBuff[0] = black_144;
-  _drawBuff[1] = orange_144;
-  _drawBuff[2] = yellow_144;
+  // _drawBuff[0] = black_144;
+  // _drawBuff[1] = orange_144;
+  // _drawBuff[2] = yellow_144;
+
+  _drawBuff[0] = blue_bytes;
+  _drawBuff[1] = red_bytes;
+  _drawBuff[2] = yellow_bytes;
+
   // _chassis->moveTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
 }
 
