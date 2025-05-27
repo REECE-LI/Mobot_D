@@ -187,8 +187,8 @@ int draw_Pic(int argc, char **argv) {
     auto num = atoi(argv[1]);
     auto x = atoi(argv[2]);
     auto y = atoi(argv[3]);
-    mobot.drawLoop(700, 100, 288, 160, x, y, num);
-    //mobot.drawLoop(700, 100, 144, 80, x, y, num);
+    // mobot.drawLoop(700, 100, 288, 160, x, y, num);
+    mobot.drawLoop(700, 100, 144, 80, x, y, num);
       // switch (num)
       // {
       // case 1:

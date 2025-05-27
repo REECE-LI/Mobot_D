@@ -1,293 +1,227 @@
 #include "Robot.h"
 #include "main.h"
-//#include "ShellFunc.h"
+// #include "ShellFunc.h"
 
-Robot::Robot()
-{
-   //init();
-} 
-
-
-Robot::Robot(ChassisController *chassis, ArmController *arm)
-{
-   _chassis = chassis;
-   _arm = arm;
-   //init();
-} 
-
-void Robot::attachArmController(ArmController *arm)
-{
-   _arm = arm;
+Robot::Robot() {
+  // init();
 }
 
-void Robot::attachChassisController(ChassisController *chassis)
-{
-   _chassis = chassis;
+Robot::Robot(ChassisController *chassis, ArmController *arm) {
+  _chassis = chassis;
+  _arm = arm;
+  // init();
 }
 
-void Robot::attachRGB( CFastLED *RGB, CRGB *leds, uint16_t LEDNum)
-{
-   _LEDNum = LEDNum;
-   _leds = leds;
-   _RGB = RGB;
-  
+void Robot::attachArmController(ArmController *arm) { _arm = arm; }
+
+void Robot::attachChassisController(ChassisController *chassis) {
+  _chassis = chassis;
 }
 
-void Robot::init(void)
-{
-if (_chassis)
-{
-  _chassis->setTargetValue(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
-  _chassis->setActualValue(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
-  _chassis->init();
+void Robot::attachRGB(CFastLED *RGB, CRGB *leds, uint16_t LEDNum) {
+  _LEDNum = LEDNum;
+  _leds = leds;
+  _RGB = RGB;
 }
 
-if (_arm)
-{
-  _arm->init();
+void Robot::init(void) {
+  if (_chassis) {
+    _chassis->setTargetValue(ChassisTargetX, ChassisTargetY,
+                             ChassisTargetAngle);
+    _chassis->setActualValue(ChassisTargetX, ChassisTargetY,
+                             ChassisTargetAngle);
+    _chassis->init();
+  }
+
+  if (_arm) {
+    _arm->init();
+  }
+
+  // _drawBuff[0] = black_288;
+  // _drawBuff[1] = orange_288;
+  // _drawBuff[2] = yellow_288;
+
+  _drawBuff[0] = black_144;
+  _drawBuff[1] = orange_144;
+  _drawBuff[2] = yellow_144;
+  // _chassis->moveTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
 }
 
-  _drawBuff[0] = black_288;
-  _drawBuff[1] = orange_288;
-  _drawBuff[2] = yellow_288;
- // _chassis->moveTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
+void Robot::moveChassis(float vx, float vy) { _chassis->move(vx, vy, 0); }
+
+void Robot::moveChassis(float vx, float vy, float vspin) {
+  _chassis->move(vx, vy, vspin);
 }
 
-void Robot::moveChassis(float vx, float vy)
-{
-   _chassis->move(vx, vy, 0);
-
+bool Robot::moveChassisTo(float x, float y, float angle) {
+  return _chassis->moveTo(x, y, angle);
 }
 
+void Robot::stopChassis(void) { _chassis->stop(); }
 
-void Robot::moveChassis(float vx, float vy, float vspin)
-{
-   _chassis->move(vx, vy, vspin);
-
+void Robot::setChassisActualValue(float actualX, float actualY,
+                                  float actualAngle) {
+  _chassis->setActualValue(actualX, actualY, actualAngle);
 }
 
-bool Robot::moveChassisTo(float x, float y, float angle)
-{
-   return _chassis->moveTo(x, y, angle);
+void Robot::setArmZBound(int up, int down) {
+  ArmUp = up;
+  ArmDown = down;
 }
 
-void Robot::stopChassis(void)
-{
-   _chassis->stop();
-}
-
-void Robot::setChassisActualValue(float actualX, float actualY, float actualAngle)
-{
-   _chassis->setActualValue(actualX, actualY, actualAngle);
-}
-
-void Robot::setArmZBound(int up, int down)
-{
-   ArmUp = up;
-   ArmDown = down;
-}
-
-bool Robot::moveArmTo(float x, float y, float z)
-{
+bool Robot::moveArmTo(float x, float y, float z) {
   return _arm->moveTo(x, y, z);
 }
 
-bool Robot::moveArmTo(float x, float y)
-{
-  return _arm->moveTo(x, y);
+bool Robot::moveArmTo(float x, float y) { return _arm->moveTo(x, y); }
+
+bool Robot::moveArmZ(float z) { return _arm->moveZ(z); }
+
+bool Robot::getArmCoordinate() { return _arm->getCoordinate(); }
+
+void Robot::breatheRGB(uint8_t color, uint16_t time) {
+  for (int i = 10; i < 255; i++) {
+    for (int j = 0; j < _LEDNum; j++) {
+      _leds[j] = CHSV(color, 255, i);
+    }
+    _RGB->show();
+    delay(time);
+  }
+  for (int i = 255; i > 10; i--) {
+    for (int j = 0; j < _LEDNum; j++) {
+      _leds[j] = CHSV(color, 255, i);
+    }
+    _RGB->show();
+    delay(time);
+  }
 }
 
-
-bool Robot::moveArmZ(float z)
-{
-  return _arm->moveZ(z);
-}
-
-bool Robot::getArmCoordinate()
-{
-  return _arm->getCoordinate();
-}
-
-void Robot::breatheRGB(uint8_t color, uint16_t time)
-{
-   for (int i = 10; i < 255; i++)
-   {
-     for (int j = 0; j < _LEDNum; j++)
-     {
-       _leds[j] = CHSV(color, 255, i);
-     }
-     _RGB->show();
-     delay(time);
-   }
-   for (int i = 255; i > 10; i--)
-   {
-     for (int j = 0; j < _LEDNum; j++)
-     {
-       _leds[j] = CHSV(color, 255, i);
-     }
-     _RGB->show();
-     delay(time);
-   }
-}
-
-void Robot::drawPoint(uint16_t x, uint16_t y)
-{
+void Robot::drawPoint(uint16_t x, uint16_t y) {
   moveArmZ(ArmUp);
   moveArmTo(x, y);
   moveArmZ(ArmDown);
   moveArmZ(ArmUp);
 }
 
-
-void Robot::draw64x64(uint8_t ((*data)[8]), uint8_t armInterval)
-{
+void Robot::draw64x64(uint8_t((*data)[8]), uint8_t armInterval) {
   static uint8_t start = 0;
   moveArmZ(ArmUp);
   moveArmTo(0, 88);
-  for (uint8_t y = 0; y < 64; y+=armInterval)
-  {
+  for (uint8_t y = 0; y < 64; y += armInterval) {
     moveArmZ(ArmUp);
     moveArmTo(0, 85 - y);
-    for (uint8_t x = 0; x < 8; x++)
-    {
-      
-      for (uint8_t i = start; i < 8; i+=armInterval)
-      { 
-        if ((data[y][x] << i) & 0x80)
-        {
-          
+    for (uint8_t x = 0; x < 8; x++) {
+
+      for (uint8_t i = start; i < 8; i += armInterval) {
+        if ((data[y][x] << i) & 0x80) {
+
           drawPoint((x * 8) + 5 + i, 85 - y);
+        } else {
         }
-        else
-        {
-          
-        } 
-        //start = 8 - i;
+        // start = 8 - i;
       }
     }
   }
-  //mobot.moveArmZ(-1);
+  // mobot.moveArmZ(-1);
 }
 
-void Robot::draw8x8(uint8_t (*data))
-{
+void Robot::draw8x8(uint8_t(*data)) {
   static uint8_t start = 0;
   static uint8_t armInterval = 8;
   moveArmZ(ArmUp);
   moveArmTo(0, 80);
-  for (uint8_t y = 0; y <8; y++)
-  {
+  for (uint8_t y = 0; y < 8; y++) {
     moveArmZ(ArmUp);
     moveArmTo(0, 80 - (y * armInterval));
-    for (uint8_t i = start; i < 8; i++)
-    { 
-      if ((data[y] << i) & 0x80)
-      {
-        //shell.print(1);
-        drawPoint((i) * armInterval + 8, 80 - (y * armInterval));
+    for (uint8_t i = start; i < 8; i++) {
+      if ((data[y] << i) & 0x80) {
+        // shell.print(1);
+        drawPoint((i)*armInterval + 8, 80 - (y * armInterval));
+      } else {
+        // shell.print(0);
       }
-      else
-      {
-        //shell.print(0);
-      } 
-      //start = 8 - i;
+      // start = 8 - i;
     }
-    //shell.println();
+    // shell.println();
   }
-  //mobot.moveArmZ(-1);
+  // mobot.moveArmZ(-1);
 }
 
-void Robot::draw16x16(uint8_t ((*data)[2]))
-{
+void Robot::draw16x16(uint8_t((*data)[2])) {
   static uint8_t start = 0;
   static uint8_t armInterval = 4;
   moveArmZ(ArmUp);
   moveArmTo(0, 85);
-  for (uint8_t y = 0; y <16; y++)
-  {
+  for (uint8_t y = 0; y < 16; y++) {
     moveArmZ(ArmUp);
     moveArmTo(0, 85 - (y * armInterval));
-    for (uint8_t x = 0; x < 2; x++)
-    {
-      
-      for (uint8_t i = start; i < 8; i++)
-      { 
-        if ((data[y][x] << i) & 0x80)
-        {
-          
+    for (uint8_t x = 0; x < 2; x++) {
+
+      for (uint8_t i = start; i < 8; i++) {
+        if ((data[y][x] << i) & 0x80) {
+
           drawPoint(((x * 8) + i) * armInterval + 15, 85 - (y * armInterval));
+        } else {
         }
-        else
-        {
-          
-        } 
-        //start = 8 - i;
+        // start = 8 - i;
       }
     }
   }
-  //mobot.moveArmZ(-1);
+  // mobot.moveArmZ(-1);
 }
 
 int16_t takePos4 = 400, takePos3 = 3280;
 
-void Robot::givePen(DrawColor_t penId)
-{
+void Robot::givePen(DrawColor_t penId) {
 
-  //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
-  //移动到等待换笔点
+  // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
+  // 移动到等待换笔点
   moveChassisTo(_waitChange.x, _waitChange.y, _waitChange.angle);
-  //stopChassis();
+  // stopChassis();
 
-  //发送换笔指令
+  // 发送换笔指令
   sendChangeCmd(penId, PenState_t::OPEN);
-  //机械臂切换到取笔状态
+  // 机械臂切换到取笔状态
   sms_sts.WritePosEx(3, takePos3, 1000, 200);
   delay(800);
 
-  sms_sts.WritePosEx(4, takePos4+1000, 1000, 200);
+  sms_sts.WritePosEx(4, takePos4 + 1000, 1000, 200);
   // sms_sts.WritePosEx(3, takePos3, 1000, 200);
   delay(1000);
-  //移动到换笔地点
+  // 移动到换笔地点
   moveChassisTo(_change.x, _change.y, _change.angle);
-  //stopChassis();
+  // stopChassis();
 
-
-
-  //发送换笔结构松开指令
+  // 发送换笔结构松开指令
   sms_sts.WritePosEx(4, takePos4, 1000, 200);
   delay(100);
   sms_sts.WritePosEx(4, takePos4, 1000, 200);
-  while (abs(takePos4 - sms_sts.ReadPos(4)) > 100)
-  {
+  while (abs(takePos4 - sms_sts.ReadPos(4)) > 100) {
     delay(50);
   }
-
 
   sendChangeCmd(penId, PenState_t::CLOSE);
 
   delay(1000);
-  //移动到等待换笔点
+  // 移动到等待换笔点
   moveChassisTo(_waitChange.x, _waitChange.y, _waitChange.angle);
   stopChassis();
-
 }
 
+void Robot::takePen(DrawColor_t penId) {
 
-void Robot::takePen(DrawColor_t penId)
-{
-
-  //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
-    //机械臂切换到取笔状态
+  // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
+  // 机械臂切换到取笔状态
   sms_sts.WritePosEx(4, takePos4, 1000, 200);
   delay(100);
   sms_sts.WritePosEx(4, takePos4, 1000, 200);
   sms_sts.WritePosEx(3, takePos3, 1000, 200);
   delay(1000);
-  //移动到等待换笔点
+  // 移动到等待换笔点
   moveChassisTo(_waitChange.x, _waitChange.y, _waitChange.angle);
   stopChassis();
 
-  //发送换笔指令
+  // 发送换笔指令
   sendChangeCmd(penId, PenState_t::CLOSE);
   // //机械臂切换到取笔状态
   // sms_sts.WritePosEx(4, takePos4, 1000, 200);
@@ -295,55 +229,47 @@ void Robot::takePen(DrawColor_t penId)
   // sms_sts.WritePosEx(4, takePos4, 1000, 200);
   // sms_sts.WritePosEx(3, takePos3, 1000, 200);
   // delay(1000);
-  //移动到换笔地点
+  // 移动到换笔地点
   moveChassisTo(_change.x, _change.y, _change.angle);
   stopChassis();
 
-  //发送换笔结构松开指令
+  // 发送换笔结构松开指令
   sendChangeCmd(penId, PenState_t::OPEN);
   delay(100);
-  //机械臂切换到取完笔状态
+  // 机械臂切换到取完笔状态
   sms_sts.WritePosEx(4, takePos4 + 1000, 1000, 200);
   delay(1000);
-  //移动到等待换笔点
+  // 移动到等待换笔点
   moveChassisTo(_waitChange.x - 100, _waitChange.y + 100, _waitChange.angle);
   stopChassis();
 
   sms_sts.WritePosEx(3, takePos3 - 1000, 1000, 200);
   delay(1000);
   sms_sts.WritePosEx(4, takePos4 + 2400, 1000, 200);
- 
-
 }
 
-bool Robot::sendChangeCmd(DrawColor_t penId, PenState_t state)
-{
+bool Robot::sendChangeCmd(DrawColor_t penId, PenState_t state) {
   uint16_t timeout = 200;
   char buff[8];
-  sprintf(buff,"pen %d %d",penId, state);
-  do
-  {
-    do
-    {
-      if (!timeout --)
-      {
+  sprintf(buff, "pen %d %d", penId, state);
+  do {
+    do {
+      if (!timeout--) {
         return false;
       }
       Wire.beginTransmission(SLAVE_ADDRESS); // 开始与从设备通信
-      Wire.print(buff); // 发送数据
+      Wire.print(buff);                      // 发送数据
       delay(5);
-    
-    } while (Wire.endTransmission()!=ESP_OK);
+
+    } while (Wire.endTransmission() != ESP_OK);
     buff[7] = 0;
     delay(10);
   } while (!receiveChangeACK(buff));
 
-return true;
-
+  return true;
 }
 
-bool Robot::receiveChangeACK(char *buff) 
-{
+bool Robot::receiveChangeACK(char *buff) {
   Wire.requestFrom(SLAVE_ADDRESS, 7); // 请求最多32个字节
   delay(5);
   char Message[128] = {0};
@@ -355,179 +281,164 @@ bool Robot::receiveChangeACK(char *buff)
   Message[i] = 0;
   shell.println(i);
   if (i == 7) {
-    shell.printf("Message:%s\tbuff:%s \r\n",Message,buff);
+    shell.printf("Message:%s\tbuff:%s \r\n", Message, buff);
     int result1 = strcmp(Message, buff);
     shell.println(result1);
-   if (result1 == 0)
-   {
+    if (result1 == 0) {
       // shell.println(receivedMessage);
       Message[0] = '\n';
       return true;
-   }
-   
+    }
   }
   return false;
 }
 
-void Robot::drawLoop(float startX, float startY, uint16_t width, uint16_t hight,float drawX, float drawY,uint8_t pen)
-{
-  ChassisTargetX = startX ;
-  ChassisTargetY = startY ;
+void Robot::drawLoop(float startX, float startY, uint16_t width, uint16_t hight,
+                     float drawX, float drawY, uint8_t pen) {
+  ChassisTargetX = startX;
+  ChassisTargetY = startY;
 
   static bool isXfirst = true;
   static bool isPenfirst = true;
 
   static uint8_t chassisInterval = 64;
-  for (int i = drawY; i < 10; i++)
-  {
-    //ChassisTargetX = startX ;
+  for (int i = drawY; i < 10; i++) {
+    // ChassisTargetX = startX ;
     int j = 0, x = 0;
-    if (isPenfirst)
-    {
+    if (isPenfirst) {
       j = pen;
       x = drawX;
       isPenfirst = false;
     }
-    ChassisTargetY = startY  + (i * chassisInterval);
+    ChassisTargetY = startY + (i * chassisInterval);
     ChassisTargetX = startX + (x * chassisInterval);
-    for (; j < 3; j++)
-    {
+    for (; j < 3; j++) {
 
-      x = findStartX(width, hight, drawX, &_drawBuff[j][(i*8)*(width/8)]);
-      if (x == -1)
-      {
-        continue;
-      }
-      
+      // x = findStartX(width, hight, drawX, &_drawBuff[j][(i * 8) * (width / 8)]);
+      // if (x == -1) {
+      //   continue;
+      // }
+
       ChassisTargetX = startX + (x * chassisInterval);
-      //取笔
-      takePen((DrawColor_t)(j+1));
-      //移动到待打点
-      moveChassisTo(_waitChange.x - 100, ChassisTargetY + 50, _waitChange.angle);//
-      //旋转90度
+      // 取笔
+      takePen((DrawColor_t)(j + 1));
+      // 移动到待打点
+      moveChassisTo(_waitChange.x - 100, ChassisTargetY + 50,
+                    _waitChange.angle); //
+      // 旋转90度
       _chassis->turnTo(285);
 
-      //移动到起始点下面
-      moveChassisTo(ChassisTargetX, ChassisTargetY + 50, 285);//
+      // 移动到起始点下面
+      moveChassisTo(ChassisTargetX, ChassisTargetY + 50, 285); //
 
-      //旋转至水平
+      // 旋转至水平
       _chassis->turnTo(ChassisTargetAngle);
 
-      //打点
-      //drawPictureHight16(ChassisTargetX, ChassisTargetY, width, hight, x, &_drawBuff[j][(i*16)*20]);
-      drawPictureHight16(ChassisTargetX, ChassisTargetY, width, hight, x, &_drawBuff[j][(i*16)*(width/8)]);
-      //drawPictureHight8(ChassisTargetX, ChassisTargetY, width, hight, x, &_drawBuff[j][(i*8)*(width/8)]);
+      // 打点
+      // drawPictureHight16(ChassisTargetX, ChassisTargetY, width, hight, x,
+      // &_drawBuff[j][(i*16)*20]);
+      //  drawPictureHight16(ChassisTargetX, ChassisTargetY, width, hight, x,
+      //  &_drawBuff[j][(i*16)*(width/8)]);
+      drawPictureHight8(ChassisTargetX, ChassisTargetY, width, hight, x,
+                        &_drawBuff[j][(i * 8) * (width / 8)]);
 
-      //旋转90度
+      // 旋转90度
       _chassis->turnTo(15);
-      //移动到待待换笔点
+      // 移动到待待换笔点
       moveChassisTo(_waitChange.x - 100, ChassisTargetY, 15);
 
-       //旋转至水平
+      // 旋转至水平
       _chassis->turnTo(ChassisTargetAngle);
 
-       //移动到换笔点
+      // 移动到换笔点
       moveChassisTo(_waitChange.x, _waitChange.y, _waitChange.angle);
 
       delay(1000);
-      //还笔
-      givePen((DrawColor_t)(j+1));
+      // 还笔
+      givePen((DrawColor_t)(j + 1));
 
-      ChassisTargetX = startX ;
-     // ChassisTargetY = startY  + (i*chassisInterval);
-
+      ChassisTargetX = startX;
+      // ChassisTargetY = startY  + (i*chassisInterval);
     }
-    
   }
 }
 
-int8_t Robot::findStartX(uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data)
-{
+int8_t Robot::findStartX(uint16_t width, uint16_t hight, uint8_t drawX,
+                         uint8_t *data) {
   uint32_t dataSum = 0;
 
-  for (int i = drawX; i < (width/16); i++)
-  {
-    for (int y = 0; y < 16; y++)
-    {
-      for (int x = 0; x < 2; x++)
-      {
-        dataSum += data[(i*2)+y*(width/8)+x];//
-        
+  for (int i = drawX; i < (width / 16); i++) {
+    for (int y = 0; y < 16; y++) {
+      for (int x = 0; x < 2; x++) {
+        dataSum += data[(i * 2) + y * (width / 8) + x]; //
       }
     }
-   // sumBuff[i] = dataSum;
-   if (dataSum)
-   {
+    // sumBuff[i] = dataSum;
+    if (dataSum) {
       return i;
-   }
-   
+    }
+
     dataSum = 0;
   }
 
   return -1;
-} 
+}
 
-void Robot::drawPictureHight8(float startX, float startY, uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data)
-{
+void Robot::drawPictureHight8(float startX, float startY, uint16_t width,
+                              uint16_t hight, uint8_t drawX, uint8_t *data) {
   uint32_t dataSum = 0;
   static uint8_t chassisInterval = 64;
-  ChassisTargetX = startX ;
-  ChassisTargetY = startY ;
+  ChassisTargetX = startX;
+  ChassisTargetY = startY;
 
   moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
   stopChassis();
 
-  for (int i = drawX; i < (width/8); i++)
-  {
+  for (int i = drawX; i < (width / 8); i++) {
 
-
-    for (int y = 0; y < 8; y++)
-    {
-     // for (int x = 0; x < 2; x++)
+    for (int y = 0; y < 8; y++) {
+      // for (int x = 0; x < 2; x++)
       {
-        drawBuffer8[y] = data[(i)+y*(width/8)];//
-        //shell.println(drawBuffer8[y]);
-        dataSum +=  drawBuffer8[y];
+        drawBuffer8[y] = data[(i) + y * (width / 8)]; //
+        // shell.println(drawBuffer8[y]);
+        dataSum += drawBuffer8[y];
       }
     }
-    if (dataSum)
-    {
-     // moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+    if (dataSum) {
+      // moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) ,
+      // ChassisTargetAngle);
       moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
       stopChassis();
 
       draw8x8(drawBuffer8);
       {
+        // ChassisTargetX += chassisInterval;
+        moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                      ChassisTargetAngle);
+        // ChassisTargetX-=(chassisInterval);
+        // ChassisTargetX = startX + (i + 1) * chassisInterval;
         ChassisTargetX += chassisInterval;
-        moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
-        //ChassisTargetX-=(chassisInterval);
-        //ChassisTargetX = startX + (i + 1) * chassisInterval;
-        //ChassisTargetX += chassisInterval;
-        //moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+        moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
         stopChassis();
       }
-    }
-    else
-    {
-      ChassisTargetX = startX + (i + 1) * chassisInterval;
-      moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
-      // ChassisTargetX-=(chassisInterval);
+    } else {
       // ChassisTargetX = startX + (i + 1) * chassisInterval;
-      moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+      moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                    ChassisTargetAngle);
+      // ChassisTargetX-=(chassisInterval);
+      ChassisTargetX = startX + (i + 1) * chassisInterval;
+      moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
       stopChassis();
-
     }
     dataSum = 0;
   }
-
 }
-
 
 #if 0
 void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data)
 {
   uint32_t dataSum = 0;
-  uint32_t sumBuff[18] = {0};  
+  uint32_t sumBuff[18] = {0};
   static uint8_t chassisInterval = 64;
   ChassisTargetX = startX ;
   ChassisTargetY = startY ;
@@ -555,7 +466,7 @@ void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint1
     // {
     //   /* code */
     // }
-    
+
     for (int y = 0; y < 16; y++)
     {
       for (int x = 0; x < 2; x++)
@@ -593,7 +504,7 @@ void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint1
       // {
       //   /* code */
       // }
-      
+
       _chassis->turnTo(15);
       ChassisTargetX = startX + (i + 1) * chassisInterval;
       moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval) ,15);
@@ -604,13 +515,13 @@ void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint1
 
 }
 #endif
-void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data)
-{
+void Robot::drawPictureHight16(float startX, float startY, uint16_t width,
+                               uint16_t hight, uint8_t drawX, uint8_t *data) {
   uint32_t dataSum = 0;
-  uint32_t sumBuff[18] = {0};  
+  uint32_t sumBuff[18] = {0};
   static uint8_t chassisInterval = 64;
-  ChassisTargetX = startX ;
-  ChassisTargetY = startY ;
+  ChassisTargetX = startX;
+  ChassisTargetY = startY;
 
   moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
   stopChassis();
@@ -625,165 +536,141 @@ void Robot::drawPictureHight16(float startX, float startY, uint16_t width, uint1
   //       dataSum +=  drawBuffer16[y][x];
   //     }
   //   }
-    
+
   //   sumBuff[i] = dataSum;
   //   dataSum = 0;
   // }
 
-  for (int i = drawX; i < (width/16); i++)
-  {
+  for (int i = drawX; i < (width / 16); i++) {
     // for (uint8_t j = (i*2*16); j < (16*(width/8)); j++)
     // {
     //   /* code */
     // }
-    
-    for (int y = 0; y < 16; y++)
-    {
-      for (int x = 0; x < 2; x++)
-      {
-        drawBuffer16[y][x] = data[(i*2)+y*(width/8)+x];//
-        dataSum +=  drawBuffer16[y][x];
+
+    for (int y = 0; y < 16; y++) {
+      for (int x = 0; x < 2; x++) {
+        drawBuffer16[y][x] = data[(i * 2) + y * (width / 8) + x]; //
+        dataSum += drawBuffer16[y][x];
       }
     }
-    if (dataSum)
-    {
-     // moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+    if (dataSum) {
+      // moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) ,
+      // ChassisTargetAngle);
       moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
       stopChassis();
 
       draw16x16(drawBuffer16);
       {
-        moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+        moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                      ChassisTargetAngle);
         // ChassisTargetX-=(chassisInterval);
-        //ChassisTargetX = startX + (i + 1) * chassisInterval;
+        // ChassisTargetX = startX + (i + 1) * chassisInterval;
         ChassisTargetX += chassisInterval;
-        moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+        moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
         stopChassis();
       }
-    }
-    else
-    {
-      moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+    } else {
+      moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                    ChassisTargetAngle);
       // ChassisTargetX-=(chassisInterval);
       ChassisTargetX = startX + (i + 1) * chassisInterval;
-      moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+      moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
       stopChassis();
-
     }
     dataSum = 0;
   }
-
 }
 
-
-void Robot::drawPicture(float startX, float startY, float drawX, float drawY, uint16_t width, uint16_t hight,  uint8_t *data)
-{
+void Robot::drawPicture(float startX, float startY, float drawX, float drawY,
+                        uint16_t width, uint16_t hight, uint8_t *data) {
   static uint8_t chassisInterval = 64;
   static uint8_t armInterval = 4;
   uint32_t dataSum = 0;
   uint8_t ratio = 1;
   bool isFirst = true;
 
-  ChassisTargetX = startX + (drawX) * chassisInterval;
-  ChassisTargetY = startY + (drawY) * chassisInterval;
+  ChassisTargetX = startX + (drawX)*chassisInterval;
+  ChassisTargetY = startY + (drawY)*chassisInterval;
 
-  //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
+  // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
 
   moveChassisTo(_waitChange.x, _waitChange.y, _waitChange.angle);
   stopChassis();
   _drawBuff[DrawColor_t::BLACK] = data;
 
-  for (int y = drawY; y*64/ratio < hight; y++)
-  {
-    if (y%2)
-    {
-      //for (int x = (width/8)/8/ratio - 1 ; x >= 0; x--)//- drawX
-      int x = x = (width/8)/8/ratio - 1;
-      if (isFirst)
-      {
+  for (int y = drawY; y * 64 / ratio < hight; y++) {
+    if (y % 2) {
+      // for (int x = (width/8)/8/ratio - 1 ; x >= 0; x--)//- drawX
+      int x = x = (width / 8) / 8 / ratio - 1;
+      if (isFirst) {
         x = drawX;
         isFirst = false;
       }
-      for ( ; x >= 0; x--)
-      {
-        for (int i = 0; i < 64/ratio; i++)
-        {
-          for (int j = 0; j < 8/ratio; j++)
-          {
-            drawBuffer[i*ratio][j*ratio] = data[((y*64)/ratio+i)*(width/8)+(x*8)/ratio+j];
-            dataSum +=  drawBuffer[i][j];
+      for (; x >= 0; x--) {
+        for (int i = 0; i < 64 / ratio; i++) {
+          for (int j = 0; j < 8 / ratio; j++) {
+            drawBuffer[i * ratio][j * ratio] =
+                data[((y * 64) / ratio + i) * (width / 8) + (x * 8) / ratio +
+                     j];
+            dataSum += drawBuffer[i][j];
           }
         }
 
-        if (dataSum)
-        {
+        if (dataSum) {
           draw64x64(drawBuffer, armInterval);
-          if ((x-1) >= 0)
-          {
-            moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+          if ((x - 1) >= 0) {
+            moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                          ChassisTargetAngle);
             // ChassisTargetX-=(chassisInterval);
             ChassisTargetX = startX + (x - 1) * chassisInterval;
-            moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             stopChassis();
-          }
-          else
-          {
-            // ChassisTargetY+=chassisInterval;
-            ChassisTargetY = startY + (y+1) * chassisInterval;
-            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
-            stopChassis();
-          }
-        }
-        else
-        {   
-          if ((x-1) >= 0)
-          {
-           // moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
-            // ChassisTargetX-=(chassisInterval);
-            ChassisTargetX = startX + (x - 1) * chassisInterval;
-           // moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
-           // stopChassis();
-          }
-          else
-          {
+          } else {
             // ChassisTargetY+=chassisInterval;
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-           // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
-           // stopChassis();
+            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
+            stopChassis();
+          }
+        } else {
+          if ((x - 1) >= 0) {
+            // moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval)
+            // , ChassisTargetAngle); ChassisTargetX-=(chassisInterval);
+            ChassisTargetX = startX + (x - 1) * chassisInterval;
+            // moveChassisTo(ChassisTargetX, ChassisTargetY,ChassisTargetAngle);
+            // stopChassis();
+          } else {
+            // ChassisTargetY+=chassisInterval;
+            ChassisTargetY = startY + (y + 1) * chassisInterval;
+            // moveChassisTo(ChassisTargetX, ChassisTargetY,
+            // ChassisTargetAngle); stopChassis();
           }
         }
 
         dataSum = 0;
-        
       }
 
-    }
-    else
-    {
+    } else {
       int x = 0;
-      if (isFirst)
-      {
+      if (isFirst) {
         x = drawX;
         isFirst = false;
       }
-      
-      for (; (x * 8)/ratio < (width / 8); x++)
-      {
-        for (int i = 0; i < 64/ratio; i++)
-        {
-          for (int j = 0; j < 8/ratio; j++)
-          {
-            drawBuffer[i*ratio][j*ratio] = data[((y*64/ratio)+i)*(width/8)+(x*8)/ratio+j];
-            dataSum +=  drawBuffer[i][j];
+
+      for (; (x * 8) / ratio < (width / 8); x++) {
+        for (int i = 0; i < 64 / ratio; i++) {
+          for (int j = 0; j < 8 / ratio; j++) {
+            drawBuffer[i * ratio][j * ratio] =
+                data[((y * 64 / ratio) + i) * (width / 8) + (x * 8) / ratio +
+                     j];
+            dataSum += drawBuffer[i][j];
           }
         }
 
-        if (dataSum)
-        {
+        if (dataSum) {
           draw64x64(drawBuffer, armInterval);
 
 #if 0
-          
+
           moveChassisTo(1980, 380, ChassisTargetAngle);
 
           sms_sts.WritePosEx(3, 3500, 1000, 200);
@@ -832,7 +719,7 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           }
           {
             delay(200);
-            
+
           }
           sms_sts.WritePosEx(4, 1000, 2000, 200);
 
@@ -840,47 +727,37 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           moveChassisTo(1980, 480, ChassisTargetAngle);
           stopChassis();
 #endif
-          if (((x+1) * 8)/ratio < (width / 8))
-          {
-            moveChassisTo(ChassisTargetX , ChassisTargetY + (chassisInterval) , ChassisTargetAngle );
+          if (((x + 1) * 8) / ratio < (width / 8)) {
+            moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval),
+                          ChassisTargetAngle);
             ChassisTargetX = startX + (x + 1) * chassisInterval;
             moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             stopChassis();
-          }
-          else
-          {
+          } else {
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
+            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             stopChassis();
           }
 
-        }
-        else
-        {
-          if (((x+1) * 8)/ratio < (width / 8))
-          {
-            //moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
+        } else {
+          if (((x + 1) * 8) / ratio < (width / 8)) {
+            // moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval)
+            // , ChassisTargetAngle);
             ChassisTargetX = startX + (x + 1) * chassisInterval;
-            //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
-            //stopChassis();
-          }
-          else
-          {
+            // moveChassisTo(ChassisTargetX, ChassisTargetY,
+            // ChassisTargetAngle); stopChassis();
+          } else {
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-            //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
-            //stopChassis();
+            // moveChassisTo(ChassisTargetX, ChassisTargetY,
+            // ChassisTargetAngle); stopChassis();
           }
         }
-        
+
         dataSum = 0;
-
-
       }
-    } 
+    }
   }
 }
-
-
 
 #if 0
 void Robot::drawPicture(float startX, float startY, float drawX, float drawY, uint16_t width, uint16_t hight,  uint8_t *data)
@@ -933,12 +810,12 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           {
             // ChassisTargetY+=chassisInterval;
             ChassisTargetY = startY + (y+1) * chassisInterval;
-            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
+            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             stopChassis();
           }
         }
         else
-        {   
+        {
           if ((x-1) >= 0)
           {
            // moveChassisTo(ChassisTargetX, ChassisTargetY + (chassisInterval) , ChassisTargetAngle);
@@ -951,13 +828,13 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           {
             // ChassisTargetY+=chassisInterval;
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-           // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
+           // moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
            // stopChassis();
           }
         }
 
         dataSum = 0;
-        
+
       }
 
     }
@@ -969,7 +846,7 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
         x = drawX;
         isFirst = false;
       }
-      
+
       for (; (x * 8)/ratio < (width / 8); x++)
       {
         for (int i = 0; i < 64/ratio; i++)
@@ -985,8 +862,8 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
         {
           draw64x64(drawBuffer, armInterval);
 
-          #if 1
-          
+#if 1
+
           moveChassisTo(1980, 380, ChassisTargetAngle);
 
           sms_sts.WritePosEx(3, 3500, 1000, 200);
@@ -1035,7 +912,7 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           }
           {
             delay(200);
-            
+
           }
           sms_sts.WritePosEx(4, 1000, 2000, 200);
 
@@ -1053,7 +930,7 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           else
           {
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
+            moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             stopChassis();
           }
 
@@ -1070,18 +947,17 @@ void Robot::drawPicture(float startX, float startY, float drawX, float drawY, ui
           else
           {
             ChassisTargetY = startY + (y + 1) * chassisInterval;
-            //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle); 
+            //moveChassisTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
             //stopChassis();
           }
         }
-        
+
         dataSum = 0;
 
 
       }
-    } 
+    }
   }
 }
 
 #endif
-
