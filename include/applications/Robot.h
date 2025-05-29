@@ -103,8 +103,9 @@ public:
 
      // 取笔位置
     // Coordinate_t _change = {.x = 2115.0f , .y = 225.0f, .angle = ChassisTargetAngle};
-    Coordinate_t _change = {.x = 2128.0f , .y = 240.0f, .angle = ChassisTargetAngle};
-    Coordinate_t _waitChange = {.x = 2100.0f , .y = 255.0f, .angle = ChassisTargetAngle};
+    // Coordinate_t _change = {.x = 2128.0f , .y = 240.0f, .angle = ChassisTargetAngle};
+    Coordinate_t _change = {.x = 2045.0f , .y = 245.0f, .angle = ChassisTargetAngle};
+    Coordinate_t _waitChange = {.x = 2015.0f , .y = 268.0f, .angle = ChassisTargetAngle};
     uint8_t *_drawBuff[4] = {NULL}; 
 
     

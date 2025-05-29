@@ -189,26 +189,7 @@ int draw_Pic(int argc, char **argv) {
     auto y = atoi(argv[3]);
     // mobot.drawLoop(700, 100, 288, 160, x, y, num);
     mobot.drawLoop(700, 100, 80, 80, x, y, num);
-      // switch (num)
-      // {
-      // case 1:
-      //   /* code */
-      //   mobot.drawPicture(1000, 250, x, y, 640, 640, blue_640);
-      //   break;
 
-      // case 2:
-      //   mobot.drawPicture(1000, 250, x, y, 640, 640, yellow_640);
-      //   break;
-        
-      // case 3:
-      //   mobot.drawPicture(1000, 250, x, y, 640, 640, black_640);
-      //   break;
-      // case 4:
-      //   mobot.drawPictureHight16(1000, 250, 288, 160, blue_160);
-      //   break;
-      // default:
-      //   break;
-      // }
   }
   return 0;
 }

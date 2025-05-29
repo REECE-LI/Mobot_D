@@ -41,13 +41,14 @@ void Robot::init(void) {
   // _drawBuff[1] = orange_288;
   // _drawBuff[2] = yellow_288;
 
-  // _drawBuff[0] = black_144;
-  // _drawBuff[1] = orange_144;
-  // _drawBuff[2] = yellow_144;
+  _drawBuff[0] = black_144;
+  _drawBuff[1] = orange_144;
+  _drawBuff[2] = yellow_144;
+  _drawBuff[3] = blue_144;
 
-  _drawBuff[0] = blue_bytes;
-  _drawBuff[1] = red_bytes;
-  _drawBuff[2] = yellow_bytes;
+  // _drawBuff[0] = blue_bytes;
+  // _drawBuff[1] = red_bytes;
+  // _drawBuff[2] = yellow_bytes;
 
   // _chassis->moveTo(ChassisTargetX, ChassisTargetY, ChassisTargetAngle);
 }
@@ -317,12 +318,7 @@ void Robot::drawLoop(float startX, float startY, uint16_t width, uint16_t hight,
     }
     ChassisTargetY = startY + (i * chassisInterval);
     ChassisTargetX = startX + (x * chassisInterval);
-    for (; j < 3; j++) {
-
-      // x = findStartX(width, hight, drawX, &_drawBuff[j][(i * 8) * (width / 8)]);
-      // if (x == -1) {
-      //   continue;
-      // }
+    for (; j < 4; j++) {
 
       ChassisTargetX = startX + (x * chassisInterval);
       // È¡±Ê
