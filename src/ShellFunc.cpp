@@ -39,9 +39,9 @@ int STScmd(int argc, char **argv) {
     }
     for (int i = 0; i < 5; i++)
     {
-      Wire.beginTransmission(SLAVE_ADDRESS); // ¿ªÊ¼Óë´ÓÉè±¸Í¨ÐÅ
-      Wire.print(buff); // ·¢ËÍÊý¾Ý
-      byte error = Wire.endTransmission(); // ½áÊøÍ¨ÐÅ²¢»ñÈ¡´íÎóÂë
+      Wire.beginTransmission(SLAVE_ADDRESS); // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½è±¸Í¨ï¿½ï¿½
+      Wire.print(buff); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      byte error = Wire.endTransmission(); // ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å²ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       delay(5);
     }
     
@@ -87,9 +87,9 @@ int Pencmd(int argc, char **argv) {
     }
     for (int i = 0; i < 5; i++)
     {
-      Wire.beginTransmission(SLAVE_ADDRESS); // ¿ªÊ¼Óë´ÓÉè±¸Í¨ÐÅ
-      Wire.print(buff); // ·¢ËÍÊý¾Ý
-      byte error = Wire.endTransmission(); // ½áÊøÍ¨ÐÅ²¢»ñÈ¡´íÎóÂë
+      Wire.beginTransmission(SLAVE_ADDRESS); // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½è±¸Í¨ï¿½ï¿½
+      Wire.print(buff); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      byte error = Wire.endTransmission(); // ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å²ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       delay(5);
     }
     
@@ -256,11 +256,10 @@ int move_Get(int argc, char **argv) {
     sprintf(buff,"pen %d 1",Pen);
     mobot.moveChassisTo(x, y, o);
     mobot.stopChassis();
-    for (uint i = 0; i < 5; i++)
-    {
-      Wire.beginTransmission(SLAVE_ADDRESS); // ¿ªÊ¼Óë´ÓÉè±¸Í¨ÐÅ
-      Wire.print(buff); // ·¢ËÍÊý¾Ý
-      byte error = Wire.endTransmission(); // ½áÊøÍ¨ÐÅ²¢»ñÈ¡´íÎóÂë
+    for (uint i = 0; i < 5; i++){
+      Wire.beginTransmission(SLAVE_ADDRESS);
+      Wire.print(buff);
+      byte error = Wire.endTransmission();
       delay(5);
     }
     
@@ -295,9 +294,9 @@ int changePen(int argc, char **argv)
   // sprintf(buff,"pen %d %d",Pen, pos);
   // for (int i = 0; i < 5; i++)
   // {
-  //   Wire.beginTransmission(SLAVE_ADDRESS); // ¿ªÊ¼Óë´ÓÉè±¸Í¨ÐÅ
-  //   Wire.print(buff); // ·¢ËÍÊý¾Ý
-  //   byte error = Wire.endTransmission(); // ½áÊøÍ¨ÐÅ²¢»ñÈ¡´íÎóÂë
+  //   Wire.beginTransmission(SLAVE_ADDRESS); // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½è±¸Í¨ï¿½ï¿½
+  //   Wire.print(buff); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  //   byte error = Wire.endTransmission(); // ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å²ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   //   delay(5);
   // }
 
