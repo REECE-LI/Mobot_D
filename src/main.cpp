@@ -27,7 +27,7 @@ Servo gdw;
 // CAN CAN_1(GPIO_NUM_1, GPIO_NUM_2, 1000000);
 static QueueHandle_t xSerialQueue = NULL;
 
-// ×Ô¶¨Òå¶ÓÁÐÊý¾Ý½á¹¹
+
 typedef struct {
   char payload[ITEM_SIZE];
   uint16_t length;
@@ -149,7 +149,7 @@ void setup() {
   WS2812RGB.show();
   mobot.attachRGB(&WS2812RGB, leds, NUM_LEDS);
   shell.println("RGB init");
-  // stepper.init();//ÓÐ¿Ó
+  // stepper.init();//ï¿½Ð¿ï¿½
   // stepper.enableMotor();
   pinMode(MOTOR_EN, OUTPUT);
   digitalWrite(MOTOR_EN, HIGH);
@@ -199,9 +199,9 @@ void loop() {
   delay(10);
 
 #if 0
-  Wire.beginTransmission(SLAVE_ADDRESS); // ¿ªÊ¼Óë´ÓÉè±¸Í¨ÐÅ
-  Wire.print("Servo 1300"); // ·¢ËÍÊý¾Ý
-  byte error = Wire.endTransmission(); // ½áÊøÍ¨ÐÅ²¢»ñÈ¡´íÎóÂë
+  Wire.beginTransmission(SLAVE_ADDRESS);
+  Wire.print("Servo 1300");
+  byte error = Wire.endTransmission();
 
   if (error == 0) {
     shell.println("Data sent successfully!");
@@ -210,9 +210,9 @@ void loop() {
     shell.println(error);
   }
 
-  delay(100); // Ã¿¸ô1Ãë·¢ËÍÒ»´ÎÊý¾Ý
+  delay(100); // Ã¿ï¿½ï¿½1ï¿½ë·¢ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-  Wire.requestFrom(SLAVE_ADDRESS, 32); // ÇëÇó×î¶à32¸ö×Ö½Ú
+  Wire.requestFrom(SLAVE_ADDRESS, 32);
   String receivedMessage = "";
   while (Wire.available()) {
     char c = Wire.read();
@@ -513,8 +513,8 @@ void SerialTask(void *pvParameters) // void *pvParameters
     ret = Serial.available();
     // Serial0.println(ret);
     if (ret) {
-      char buffer[100]; // Ôö¼Ó»º³åÇø´óÐ¡ÒÔÈÝÄÉ¸ü¶àÊý¾Ý
-      // ½ÓÊÕÊý¾Ý
+      char buffer[100]; // ï¿½ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       int len = Serial.read(buffer, 99);
       if (len > 0) {
         buffer[len] = 0;
@@ -530,8 +530,8 @@ void SerialTask(void *pvParameters) // void *pvParameters
     //   ret = Serial1.available();
     //   //Serial0.println(ret);
     //   if (ret) {
-    //    char buffer[100];  // Ôö¼Ó»º³åÇø´óÐ¡ÒÔÈÝÄÉ¸ü¶àÊý¾Ý
-    //    // ½ÓÊÕÊý¾Ý
+    //    char buffer[100];  // ï¿½ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    int len = Serial1.read(buffer, 99);
     //    if (len > 0) {
     //      buffer[len] = 0;
@@ -554,11 +554,11 @@ void SerialTask(void *pvParameters) // void *pvParameters
 //     constexpr size_t MAX_BUFFER_SIZE = 256;
 //     constexpr char FRAME_END_MARKER = '\n';
 
-//     // ³õÊ¼»¯¶ÓÁÐ£¨Êµ¼ÊÓ¦ÔÚÈÎÎñÍâ´´½¨£¬´Ë´¦ÑÝÊ¾ÓÃ£©
+//     // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½Êµï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â´´ï¿½ï¿½ï¿½ï¿½ï¿½Ë´ï¿½ï¿½ï¿½Ê¾ï¿½Ã£ï¿½
 //     xSerialQueue = xQueueCreate(QUEUE_LENGTH, sizeof(SerialMessage));
 //     configASSERT(xSerialQueue);
 
-//     // »·ÐÎ»º³åÇø×´Ì¬
+//     // ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 //     struct {
 //         char data[MAX_BUFFER_SIZE];
 //         size_t head = 0;
@@ -594,43 +594,43 @@ void SerialTask(void *pvParameters) // void *pvParameters
 //         }
 //     } ringBuffer;
 //     while(true) {
-//         // µÚÒ»½×¶Î£ºÊý¾Ý½ÓÊÕ
+//         // ï¿½ï¿½Ò»ï¿½×¶Î£ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½ï¿½
 //         if(Serial.available()) {
 //             uint8_t incomingByte = Serial.read();
 //             ringBuffer.push(incomingByte);
 //         }
 
-//         // µÚ¶þ½×¶Î£ºÐ­Òé½âÎö
+//         // ï¿½Ú¶ï¿½ï¿½×¶Î£ï¿½Ð­ï¿½ï¿½ï¿½ï¿½ï¿½
 //         SerialMessage newMsg;
 //         if(ringBuffer.extractPacket(&newMsg)) {
-//             // ·¢ËÍµ½FreeRTOS¶ÓÁÐ£¨´ø³¬Ê±±£»¤£©
+//             // ï¿½ï¿½ï¿½Íµï¿½FreeRTOSï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //             if(xQueueSend(xSerialQueue, &newMsg, pdMS_TO_TICKS(10)) !=
 //             pdPASS) {
-//                 // ¶ÓÁÐÂú´¦Àí²ßÂÔ£º¶ªÆú×î¾ÉÊý¾Ý
+//                 // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //                 SerialMessage dummy;
 //                 xQueueReceive(xSerialQueue, &dummy, 0);
 //                 xQueueSend(xSerialQueue, &newMsg, 0);
 //             }
 //         }
 
-//         // µÚÈý½×¶Î£ºÊý¾Ý´¦Àí
+//         // ï¿½ï¿½ï¿½ï¿½ï¿½×¶Î£ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
 //         SerialMessage receivedMsg;
 //         if(xQueueReceive(xSerialQueue, &receivedMsg, pdMS_TO_TICKS(5)) ==
 //         pdPASS) {
-//             // Êý¾ÝÍêÕûÐÔÐ£Ñé
+//             // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½
 //             // if(receivedMsg.length > 2 &&
 //             //    receivedMsg.payload[0] == '{' &&
 //             //    receivedMsg.payload[receivedMsg.length-1] == '}') {
 //             //     decodeJsonData(receivedMsg.payload);
 //             // } else {
-//             //     // ´íÎó´¦Àí£º·¢ËÍÖØ´«ÇëÇó
+//             //     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½
 //             //     Serial.write(0x15);  // NAK
 //             // }
 
 //             decodeJsonData(receivedMsg.payload);
 //         }
 
-//         // µÚËÄ½×¶Î£ºÏµÍ³½ÚÅÄ
+//         // ï¿½ï¿½ï¿½Ä½×¶Î£ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½
 //         vTaskDelay(pdMS_TO_TICKS(1));
 //     }
 // }
@@ -766,11 +766,11 @@ void decodeJsonData(char *buffer)
 
 #endif
 
-// ×´Ì¬¶¨ÒåÃ¶¾Ù
+// ×´Ì¬ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½
 enum ArmMovement { ARM_UP = 2, ARM_DOWN = 1 };
 
 // enum EventFlags { UP_BIT = BIT0, DOWN_BIT = BIT1, RUN_BIT = BIT2 };
-//  ¹²Ïí×ÊÔ´·ÃÎÊ±£»¤
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
 //  #def ine  SAFE_ACCESS(_code) do { \
 //     if(xSemaphoreTake(xMutex, pdMS_TO_TICKS(10)) == pdTRUE) { \
 //         _code \
@@ -780,7 +780,7 @@ enum ArmMovement { ARM_UP = 2, ARM_DOWN = 1 };
 //     } \
 // } while(0)
 
-// ´¦ÀíÊý¾Ý¿é¸üÐÂ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½
 void processDataBlock(JsonObject data) {
   // SAFE_ACCESS({
   mobot.ChassisActualX = data["x"].as<int>() * 1.28; // * 1.76;
@@ -792,7 +792,7 @@ void processDataBlock(JsonObject data) {
   //   });
 }
 
-// ´¦ÀíG0Ö¸Áî
+// ï¿½ï¿½ï¿½ï¿½G0Ö¸ï¿½ï¿½
 void processG0Command(JsonObject G0, JsonVariant index) {
   EventBits_t uxBits;
   // SAFE_ACCESS({
@@ -815,12 +815,12 @@ void processG0Command(JsonObject G0, JsonVariant index) {
   }
 
   // if(uxBits & flag) {
-  //     logDebug("%sÖ¸ÁîÒÑÉúÐ§", (flag == UP_BIT) ? "ÉÏÉý" : "ÏÂ½µ");
+  //     logDebug("%sÖ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§", (flag == UP_BIT) ? "ï¿½ï¿½ï¿½ï¿½" : "ï¿½Â½ï¿½");
   // }
   // });
 }
 
-// ´¦ÀíG1Ö¸Áî
+// ï¿½ï¿½ï¿½ï¿½G1Ö¸ï¿½ï¿½
 void processG1Command(JsonObject G1, JsonVariant index) {
   // SAFE_ACCESS({
   mobot.ArmTargetX = fmodf(G1["X"].as<float>(), fontWidth);
@@ -841,7 +841,7 @@ void processG1Command(JsonObject G1, JsonVariant index) {
 
   ask_flag = 1;
   // if(uxBits & RUN_BIT) {
-  //  //   logDebug("ÔËÐÐÖ¸ÁîÒÑ¼¤»î");
+  //  //   logDebug("ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ñ¼ï¿½ï¿½ï¿½");
   // }
   //  });
 }
@@ -851,10 +851,10 @@ void decodeJsonData(char *buffer) {
   DeserializationError error = deserializeJson(doc, buffer);
 
   if (error) {
-    //  logError("JSON½âÎöÊ§°Ü: %s", error.c_str());
+    //  logError("JSONï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½: %s", error.c_str());
     return;
   }
-  // Êý¾Ý·Ö·¢´¦Àí
+  // ï¿½ï¿½ï¿½Ý·Ö·ï¿½ï¿½ï¿½ï¿½ï¿½
   if (doc["data"].isNull() == false) {
     processDataBlock(doc["data"]);
   } else if (doc["G0"].isNull() == false) {
@@ -862,6 +862,6 @@ void decodeJsonData(char *buffer) {
   } else if (doc["G1"].isNull() == false) {
     processG1Command(doc["G1"], doc["index"]);
   } else {
-    //  logWarning("Î´ÖªµÄJSONÖ¸Áî¸ñÊ½");
+    //  logWarning("Î´Öªï¿½ï¿½JSONÖ¸ï¿½ï¿½ï¿½Ê½");
   }
 }
