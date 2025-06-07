@@ -21,7 +21,7 @@ class ArmController {
     virtual bool getCoordinate(float *x, float *y, float *z) = 0;
     virtual bool getCoordinate() = 0;
   
-  protected:
+  // protected:
 
     float _x = 32.0f;
     float _y = 32.0f;

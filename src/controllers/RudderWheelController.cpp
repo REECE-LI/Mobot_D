@@ -41,16 +41,15 @@ void RudderWheelController::init(void)
    _velPID.setTarget(0);
    _vspinPID.setTarget(_targetAngle);
 
-   if (pidChassisTaskHandle!= NULL) 
-   {
-      vTaskDelete(pidChassisTaskHandle);
-   }
-  
-   xTaskCreate(pidChassisTask, "pidChassisTask", 4096, this, 1, &pidChassisTaskHandle);
+   // if (pidChassisTaskHandle!= NULL)
+   // {
+   //    vTaskDelete(pidChassisTaskHandle);
+   // }
+   //
+   // xTaskCreate(pidChassisTask, "pidChassisTask", 4096, this, 1, &pidChassisTaskHandle);
 }
 
 
-// 设置PID计算周期（以毫秒为单位）
 void RudderWheelController::setPIDCalculationPeriod(uint16_t periodMs) 
 {
    
@@ -149,7 +148,7 @@ bool RudderWheelController::turnTo(float targetAngle)
    _isStop = false;
    _isEnable = true;
    _isTurn = true;
-   _velPID.setEnabled(false);//目标速度为0，即到达位置后停止
+   _velPID.setEnabled(false);//目锟斤拷锟劫讹拷为0锟斤拷锟斤拷锟斤拷锟斤拷位锟矫猴拷停止
    _vspinPID.setTarget(_targetAngle);
  
    do
@@ -190,7 +189,7 @@ bool RudderWheelController::moveTo(float targetX, float targetY, float targetAng
   _isEnable = true;
   _isTurn = false;
   _velPID.setEnabled(true);
-  _velPID.setTarget(0);//目标速度为0，即到达位置后停止
+  _velPID.setTarget(0);//目锟斤拷锟劫讹拷为0锟斤拷锟斤拷锟斤拷锟斤拷位锟矫猴拷停止
   _vspinPID.setTarget(_targetAngle);
 
   do
@@ -505,7 +504,7 @@ bool RudderWheelController::isArrived(void)
 }
 
 
- // PID计算任务函数
+ // PID锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
 static void pidChassisTask(void *pvParameters) 
 {
     RudderWheelController *controller = static_cast<RudderWheelController *>(pvParameters);

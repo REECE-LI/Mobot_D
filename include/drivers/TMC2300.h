@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
-// TMC2300¼Ä´æÆ÷µØÖ·¶¨Òå£¨ĞèÌí¼Ó¸ü¶à¼Ä´æÆ÷£©
+// TMC2300ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½
 #define TMC2300_GCONF     0x00
 #define TMC2300_GSTAT     0x01
 #define TMC2300_IHOLD_IRUN 0x10
@@ -195,7 +195,7 @@ private:
   HardwareSerial *serial;
   uint8_t nodeAddress;
   
-  // CRC8-ATM¼ÆËãº¯Êı£¨¶àÏîÊ½: 0x07, ³õÊ¼Öµ: 0x00£©
+
   uint8_t calculateCRC(uint8_t *data, uint8_t length);
 
 public:
@@ -203,17 +203,17 @@ public:
 
   void begin(uint32_t baudrate );
 
-  // Ğ´¼Ä´æÆ÷£¨32Î»Êı¾İ£©
+
   bool writeRegister(uint8_t reg, int32_t data);
 
-  // ¶Á¼Ä´æÆ÷£¨·µ»Ø32Î»Êı¾İ£©
+
   int32_t readRegister(uint8_t reg);
 
-  // Ê¾Àı£ºÉèÖÃÔËĞĞµçÁ÷£¨IRUN£©ºÍ±£³ÖµçÁ÷£¨IHOLD£©
+
   void setCurrent(uint8_t ihold, uint8_t irun);
 
   void setVelocity(int32_t velocity);
 
-  // Ê¾Àı£º¶ÁÈ¡Çı¶¯×´Ì¬
+
   uint32_t getDriverStatus();
 };

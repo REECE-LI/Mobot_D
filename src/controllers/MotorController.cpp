@@ -26,15 +26,15 @@ void MotorController::init(void) {
     _motor->init();
   }
 
-  if (_pidCalculationTaskHandle != NULL) {
-
-    vTaskDelete(_pidCalculationTaskHandle);
-  }
-  xTaskCreate(pidCalculationTask, "PID_Calculation", 4096, this, 1,
-              &_pidCalculationTaskHandle);
+  // if (_pidCalculationTaskHandle != NULL) {
+  //
+  //   vTaskDelete(_pidCalculationTaskHandle);
+  // }
+  // xTaskCreate(pidCalculationTask, "PID_Calculation", 4096, this, 1,
+  //             &_pidCalculationTaskHandle);
 }
 
-// ÉèÖÃPID¼ÆËãÖÜÆÚ£¨ÒÔºÁÃëÎªµ¥Î»£©
+// ï¿½ï¿½ï¿½ï¿½PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½ï¿½Ôºï¿½ï¿½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½
 void MotorController::setPIDCalculationPeriod(uint16_t periodMs) {
 
   _pidCalculationPeriodMs = periodMs;
@@ -90,7 +90,7 @@ void MotorController::run(void) {
   }
 }
 
-// PID¼ÆËãÈÎÎñº¯Êý
+// PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 static void pidCalculationTask(void *pvParameters) {
   MotorController *controller = static_cast<MotorController *>(pvParameters);
   BaseType_t xWasDelayed;

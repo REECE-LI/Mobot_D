@@ -6,390 +6,319 @@
 int Pen = 1;
 
 int STScmd(int argc, char **argv) {
-  char buff[7];
-  if (argc != 4) {
-    shell.println("bad argument count");
-    return -1;
-  }
-
-  auto id = atoi(argv[1]);
-  auto pos = atoi(argv[2]);
-  auto vel = atoi(argv[3]);
-
-  // uint8_t dir = 0;
-  // if (pos < 0) {
-  //   dir = 1;
-  //   pos = -pos;
-  // }
-
-  shell.print("calling ");
-  shell.print(id);
-  shell.print(" with ");
-  shell.print(pos);
-  shell.print(" and ");
-  shell.println(vel);
-  sprintf(buff,"pen %d 0",Pen);
-
-  sms_sts.WritePosEx(id, pos, vel, 200);
-  if (id == 4 && pos < 500)
-  {
-    while (abs(pos - sms_sts.ReadPos(4)) > 100)
-    {
-      delay(50);
+    char buff[7];
+    if (argc != 4) {
+        shell.println("bad argument count");
+        return -1;
     }
-    for (int i = 0; i < 5; i++)
-    {
-      Wire.beginTransmission(SLAVE_ADDRESS); // ��ʼ����豸ͨ��
-      Wire.print(buff); // ��������
-      byte error = Wire.endTransmission(); // ����ͨ�Ų���ȡ������
-      delay(5);
-    }
-    
 
-  }
-  return 0;
+    auto id = atoi(argv[1]);
+    auto pos = atoi(argv[2]);
+    auto vel = atoi(argv[3]);
+
+    shell.print("calling ");
+    shell.print(id);
+    shell.print(" with ");
+    shell.print(pos);
+    shell.print(" and ");
+    shell.println(vel);
+    sprintf(buff, "pen %d 0", Pen);
+
+    sms_sts.WritePosEx(id, pos, vel, 200);
+    if (id == 4 && pos < 500) {
+        while (abs(pos - sms_sts.ReadPos(4)) > 100) {
+            delay(50);
+        }
+        for (int i = 0; i < 5; i++) {
+            Wire.beginTransmission(SLAVE_ADDRESS); // ��ʼ����豸ͨ��
+            Wire.print(buff); // ��������
+            byte error = Wire.endTransmission(); // ����ͨ�Ų���ȡ������
+            delay(5);
+        }
+    }
+    return 0;
 }
 
 
 int Pencmd(int argc, char **argv) {
-
-  char buff[7];
-  if (argc != 5) {
-    shell.println("bad argument count");
-    return -1;
-  }
-
-  auto id = atoi(argv[1]);
-  auto pos = atoi(argv[2]);
-  auto vel = atoi(argv[3]);
-  Pen = atoi(argv[4]);
-
-  // uint8_t dir = 0;
-  // if (pos < 0) {
-  //   dir = 1;
-  //   pos = -pos;
-  // }
-
-  shell.print("calling ");
-  shell.print(id);
-  shell.print(" with ");
-  shell.print(pos);
-  shell.print(" and ");
-  shell.println(vel);
-
-  sprintf(buff,"pen %d 0",Pen);
-  sms_sts.WritePosEx(id, pos, vel, 200);
-  if (id == 4 && pos < 500)
-  {
-    while (abs(pos - sms_sts.ReadPos(4)) > 100)
-    {
-      delay(50);
+    char buff[7];
+    if (argc != 5) {
+        shell.println("bad argument count");
+        return -1;
     }
-    for (int i = 0; i < 5; i++)
-    {
-      Wire.beginTransmission(SLAVE_ADDRESS); // ��ʼ����豸ͨ��
-      Wire.print(buff); // ��������
-      byte error = Wire.endTransmission(); // ����ͨ�Ų���ȡ������
-      delay(5);
-    }
-    
 
-  }
-  return 0;
+    auto id = atoi(argv[1]);
+    auto pos = atoi(argv[2]);
+    auto vel = atoi(argv[3]);
+    Pen = atoi(argv[4]);
+
+    // uint8_t dir = 0;
+    // if (pos < 0) {
+    //   dir = 1;
+    //   pos = -pos;
+    // }
+
+    shell.print("calling ");
+    shell.print(id);
+    shell.print(" with ");
+    shell.print(pos);
+    shell.print(" and ");
+    shell.println(vel);
+
+    sprintf(buff, "pen %d 0", Pen);
+    sms_sts.WritePosEx(id, pos, vel, 200);
+    if (id == 4 && pos < 500) {
+        while (abs(pos - sms_sts.ReadPos(4)) > 100) {
+            delay(50);
+        }
+        for (int i = 0; i < 5; i++) {
+            Wire.beginTransmission(SLAVE_ADDRESS); // ��ʼ����豸ͨ��
+            Wire.print(buff); // ��������
+            byte error = Wire.endTransmission(); // ����ͨ�Ų���ȡ������
+            delay(5);
+        }
+    }
+    return 0;
 }
 
 
-
 int STSto(int argc, char **argv) {
-  if (argc != 4) {
-    shell.println("bad argument count");
-    return -1;
-  }
+    if (argc != 4) {
+        shell.println("bad argument count");
+        return -1;
+    }
 
-  auto id = atoi(argv[1]);
-  auto pos = atoi(argv[2]);
-  auto vel = atoi(argv[3]);
+    auto id = atoi(argv[1]);
+    auto pos = atoi(argv[2]);
+    auto vel = atoi(argv[3]);
 
-  // uint8_t dir = 0;
-  // if (pos < 0) {
-  //   dir = 1;
-  //   pos = -pos;
-  // }
+    // uint8_t dir = 0;
+    // if (pos < 0) {
+    //   dir = 1;
+    //   pos = -pos;
+    // }
 
-  shell.print("calling ");
-  shell.print(id);
-  shell.print(" with ");
-  shell.print(pos);
-  shell.print(" and ");
-  shell.println(vel);
+    shell.print("calling ");
+    shell.print(id);
+    shell.print(" with ");
+    shell.print(pos);
+    shell.print(" and ");
+    shell.println(vel);
 
-  sms_sts.WritePosEx(id, pos, vel, 200);
-  return 0;
+    sms_sts.WritePosEx(id, pos, vel, 200);
+    return 0;
 }
 
 
 int STSreadPos(int argc, char **argv) {
-  if (argc != 2) {
-    shell.println("bad argument count");
-    return -1;
-  }
+    if (argc != 2) {
+        shell.println("bad argument count");
+        return -1;
+    }
 
-  auto id = atoi(argv[1]);
+    auto id = atoi(argv[1]);
 
-  shell.printf(" ID:%d, Pos: %d\r\n ", id, sms_sts.ReadPos(id));
-  return 0;
+    shell.printf(" ID:%d, Pos: %d\r\n ", id, sms_sts.ReadPos(id));
+    return 0;
 }
-
-
 
 
 int LEDTest(int argc, char **argv) {
-  if (argc != 2) {
-    shell.println("bad argument count");
-    return -1;
-  }
+    if (argc != 2) {
+        shell.println("bad argument count");
+        return -1;
+    }
 
-  auto id = atoi(argv[1]);
-  if (id == 1)
-  {
-     leds[0] = CRGB::Red;
-  }
-  else
-  {
-     leds[0] = CRGB::Black;
-  }
-  
-   
-  FastLED.show();
+    auto id = atoi(argv[1]);
+    if (id == 1) {
+        leds[0] = CRGB::Red;
+    } else {
+        leds[0] = CRGB::Black;
+    }
 
-  return 0;
+
+    FastLED.show();
+
+    return 0;
 }
 
 int Servo_Ctrl(int argc, char **argv) {
-  if (argc == 2) {
-    auto num = atoi(argv[1]);
-    gdw.writeMicroseconds(num);
-  }
-  return 0;
+
+    return 0;
 }
 
 int move_Arm(int argc, char **argv) {
-  if (argc == 3) {
-    auto x = atoi(argv[1]);
-    auto y = atoi(argv[2]);
-    mobot.moveArmTo(x, y);
-  }
-  return 0;
+    if (argc == 3) {
+        auto x = atoi(argv[1]);
+        auto y = atoi(argv[2]);
+        mobot.moveArmTo(x, y);
+    }
+    return 0;
 }
 
-int draw_Pic(int argc, char **argv) {
-  if (argc == 4) {
-    auto num = atoi(argv[1]);
-    auto x = atoi(argv[2]);
-    auto y = atoi(argv[3]);
-    // mobot.drawLoop(700, 100, 288, 160, x, y, num);
-    mobot.drawLoop(700, 100, 80, 80, x, y, num);
+int moveZ(int argc, char **argv) {
+    if (argc == 2) {
+        auto z = atoi(argv[1]);
 
-  }
-  return 0;
+        mobot.moveArmZ(z);
+    }
+    return 0;
+}
+
+
+int draw_Pic(int argc, char **argv) {
+    if (argc == 4) {
+        auto num = atoi(argv[1]);
+        auto x = atoi(argv[2]);
+        auto y = atoi(argv[3]);
+        // mobot.drawLoop(700, 100, 288, 160, x, y, num);
+        mobot.drawLoop(700, 100, 80, 80, x, y, num);
+    }
+    return 0;
 }
 
 int move_To(int argc, char **argv) {
-  if (argc == 4) {
-    mobot.ChassisTargetX = atof(argv[1]);
-    mobot.ChassisTargetY = atof(argv[2]);
-    mobot.ChassisTargetAngle = atof(argv[3]);
+    if (argc == 4) {
+        mobot.ChassisTargetX = atof(argv[1]);
+        mobot.ChassisTargetY = atof(argv[2]);
+        mobot.ChassisTargetAngle = atof(argv[3]);
 
-    mobot.moveChassisTo( mobot.ChassisTargetX, mobot.ChassisTargetY, mobot.ChassisTargetAngle);
-    mobot.stopChassis();
-
-  }
-  return 0;
+        mobot.moveChassisTo(mobot.ChassisTargetX, mobot.ChassisTargetY, mobot.ChassisTargetAngle);
+        mobot.stopChassis();
+    }
+    return 0;
 }
 
 int setFontWidth(int argc, char **argv) {
-  if (argc == 2) {
-   fontWidth = atoi(argv[1]);
-   moveTimes = 0;
 
-  }
-  return 0;
-}
-int setWrite(int argc, char **argv) 
-{
-  if (argc == 2) {
-    isWriting = atoi(argv[1]);
-   
-   }
-   return 0;
+    return 0;
 }
 
-int drawLine(int argc, char **argv) 
-{
-  if (argc == 2) {
+int setWrite(int argc, char **argv) {
 
-      mobot.moveArmZ(-1);
-      mobot.moveChassisTo(mobot.ChassisTargetX, mobot.ChassisTargetY, mobot.ChassisTargetAngle);
+    return 0;
+}
 
-      for (int i = 0; i < atoi(argv[1]); i++)
-      {
-        mobot.moveArmTo(0, 30);
-        mobot.moveArmTo(10, 30);
-        mobot.moveArmZ(-35000);
-        mobot.moveArmTo(70, 30);
-        mobot.moveArmZ(-1);
-        mobot.moveChassisTo(mobot.ChassisTargetX, mobot.ChassisTargetY + fontWidth, mobot.ChassisTargetAngle);
-        mobot.moveChassisTo(mobot.ChassisTargetX, mobot.ChassisTargetY, mobot.ChassisTargetAngle);
-        mobot.ChassisTargetX += fontWidth;
-      }
-   }
-   return 0;
+int drawLine(int argc, char **argv) {
+
+    return 0;
 }
 
 int move_Get(int argc, char **argv) {
-
-  char buff[7];
-  if (argc == 4) {
-    auto x = atof(argv[1]);
-    auto y = atof(argv[2]);
-    auto o = atof(argv[3]);
-    sprintf(buff,"pen %d 1",Pen);
-    mobot.moveChassisTo(x, y, o);
-    mobot.stopChassis();
-    for (uint i = 0; i < 5; i++){
-      Wire.beginTransmission(SLAVE_ADDRESS);
-      Wire.print(buff);
-      byte error = Wire.endTransmission();
-      delay(5);
+    char buff[7];
+    if (argc == 4) {
+        auto x = atof(argv[1]);
+        auto y = atof(argv[2]);
+        auto o = atof(argv[3]);
+        sprintf(buff, "pen %d 1", Pen);
+        mobot.moveChassisTo(x, y, o);
+        mobot.stopChassis();
+        for (uint i = 0; i < 5; i++) {
+            Wire.beginTransmission(SLAVE_ADDRESS);
+            Wire.print(buff);
+            byte error = Wire.endTransmission();
+            delay(5);
+        } {
+            delay(60);
+        }
+        sms_sts.WritePosEx(4, 1000, 2000, 200);
     }
-    
- 
-    {
-      delay(60);
-      
+    return 0;
+} //CalibrationOfs
+
+int STScenter(int argc, char **argv) {
+    if (argc != 2) {
+        shell.println("bad argument count");
+        return -1;
     }
-    sms_sts.WritePosEx(4, 1000, 2000, 200);
-  }
-  return 0;
-}//CalibrationOfs
-
-int STScenter(int argc, char **argv)
-{
-  if (argc != 2) {
-    shell.println("bad argument count");
-    return -1;
-  }
-  auto id = atoi(argv[1]);
-  sms_sts.CalibrationOfs(id);
+    auto id = atoi(argv[1]);
+    sms_sts.CalibrationOfs(id);
+    return 0;
 }
 
 
-int changePen(int argc, char **argv)
-{
-  if (argc == 3) {
-  char buff[7];
-  Pen = atoi(argv[1]);
-  auto pos = atoi(argv[2]);
+int changePen(int argc, char **argv) {
+    if (argc == 3) {
+        char buff[7];
+        Pen = atoi(argv[1]);
+        auto pos = atoi(argv[2]);
 
-  // sprintf(buff,"pen %d %d",Pen, pos);
-  // for (int i = 0; i < 5; i++)
-  // {
-  //   Wire.beginTransmission(SLAVE_ADDRESS); // ��ʼ����豸ͨ��
-  //   Wire.print(buff); // ��������
-  //   byte error = Wire.endTransmission(); // ����ͨ�Ų���ȡ������
-  //   delay(5);
-  // }
-
-  mobot.sendChangeCmd((DrawColor_t)Pen, (PenState_t)pos);
-}
-else if (argc == 2)
-{
-  Pen = atoi(argv[1]);
-  mobot.takePen((DrawColor_t)Pen);
-}
+        mobot.sendChangeCmd((DrawColor_t) Pen, (PenState_t) pos);
+    } else if (argc == 2) {
+        Pen = atoi(argv[1]);
+        mobot.takePen((DrawColor_t) Pen);
+    }
+    return 0;
 }
 
-int takePen(int argc, char **argv)
-{
-  if (argc == 2)
-  {
-    Pen = atoi(argv[1]);
-    mobot.takePen((DrawColor_t)Pen);
-  }
-  return 0;
+int takePen(int argc, char **argv) {
+    if (argc == 2) {
+        Pen = atoi(argv[1]);
+        mobot.takePen((DrawColor_t) Pen);
+    }
+    return 0;
 }
 
-int givePen(int argc, char **argv)
-{
-  if (argc == 2)
-  {
-    Pen = atoi(argv[1]);
-    mobot.givePen((DrawColor_t)Pen);
-  }
-  return 0;
+int givePen(int argc, char **argv) {
+    if (argc == 2) {
+        Pen = atoi(argv[1]);
+        mobot.givePen((DrawColor_t) Pen);
+    }
+    return 0;
 }
 
 
 int move(int argc, char **argv) {
-  if (argc == 4) {
-    auto x = atof(argv[1]);
-    auto y = atof(argv[2]);
-    auto o = atof(argv[3]);
+    if (argc == 4) {
+        auto x = atof(argv[1]);
+        auto y = atof(argv[2]);
+        auto o = atof(argv[3]);
 
-    mobot.moveChassis(x, y, o);
-  }
-  return 0;
+        mobot.moveChassis(x, y, o);
+    }
+    return 0;
 }
 
 int turn(int argc, char **argv) {
-  if (argc == 2) {
-    auto o = atof(argv[1]);
+    if (argc == 2) {
+        auto o = atof(argv[1]);
 
-    mobot._chassis->turn(o);
-  }
-  return 0;
+        mobot._chassis->turn(o);
+    }
+    return 0;
 }
 
 int turnTo(int argc, char **argv) {
-  if (argc == 2) {
-    auto o = atof(argv[1]);
+    if (argc == 2) {
+        auto o = atof(argv[1]);
 
-    mobot._chassis->turnTo(o);
-  }
-  return 0;
+        mobot._chassis->turnTo(o);
+    }
+    return 0;
 }
-
-
-
 
 
 // with Serial pointer motor.setTorque(10);
 void shellInit(void) {
+    shell.addCommand(F("STS <id> <pos> <vel>"), STScmd);
+    shell.addCommand(F("STSPOS <id>"), STSreadPos);
+    shell.addCommand(F("RGB <id> "), LEDTest);
+    shell.addCommand(F("Servo  <vel>"), Servo_Ctrl);
+    shell.addCommand(F("Draw <id> <x> <y>"), draw_Pic);
+    shell.addCommand(F("Arm <x> <y> "), move_Arm);
+    shell.addCommand(F("movez <z>"), moveZ);
+    shell.addCommand(F("MoveTo <x> <y> <o>"), move_To);
+    shell.addCommand(F("Move <x> <y> <o>"), move);
+    shell.addCommand(F("Turn <o>"), turn);
+    shell.addCommand(F("TurnTo <o>"), turnTo);
+    shell.addCommand(F("MoveGet <x> <y> <o>"), move_Get);
+    shell.addCommand(F("STSPen <id> <pos> <vel> <num>"), Pencmd);
+    shell.addCommand(F("STSCen <id>"), STScenter);
+    shell.addCommand(F("Cpen <id> <pos>"), changePen);
+    shell.addCommand(F("takePen <id>"), takePen);
+    shell.addCommand(F("givePen <id>"), givePen);
+    shell.addCommand(F("setWidth <num>"), setFontWidth);
+    shell.addCommand(F("isWriting <num>"), setWrite); //drawLine
+    shell.addCommand(F("drawLine <num>"), drawLine); //drawLine
 
-
-//  shell.addCommand(F("N20Speed <id> <cur>"),motor_N20_setSpeed);  // v 2 on // v 2 off
-//  shell.addCommand(F("N20Torque <cur>"),motor_N20_setTorque);  // v 2 on // v 2 off
-//  shell.addCommand(F("N20Target <cur>"),motor_N20_setTarget);  // v 2 on // v 2 off
-//  shell.addCommand(F("N20PID <p> <i> <d>"),motor_N20_setPID);  // v 2 on // v 2 off
-// shell.addCommand(F("rotationPID <p> <i> <d>"),rotation_setPID);  // v 2 on // v 2 off
-//  shell.addCommand(F("Ang <cur>"),setTargetAngle);  // v 2 on // v 2 off
-  shell.addCommand(F("STS <id> <pos> <vel>"), STScmd);
-  shell.addCommand(F("STSPOS <id>"), STSreadPos);
-  shell.addCommand(F("RGB <id> "), LEDTest);
-  shell.addCommand(F("Servo  <vel>"), Servo_Ctrl);
-  shell.addCommand(F("Draw <id> <x> <y>"), draw_Pic);
-  shell.addCommand(F("Arm <x> <y> "), move_Arm);
-  shell.addCommand(F("MoveTo <x> <y> <o>"), move_To);
-  shell.addCommand(F("Move <x> <y> <o>"), move);
-  shell.addCommand(F("Turn <o>"), turn);
-  shell.addCommand(F("TurnTo <o>"), turnTo);
-  shell.addCommand(F("MoveGet <x> <y> <o>"), move_Get);
-  shell.addCommand(F("STSPen <id> <pos> <vel> <num>"), Pencmd);
-  shell.addCommand(F("STSCen <id>"), STScenter);
-  shell.addCommand(F("Cpen <id> <pos>"), changePen);
-  shell.addCommand(F("takePen <id>"), takePen);
-  shell.addCommand(F("givePen <id>"), givePen);
-  shell.addCommand(F("setWidth <num>"), setFontWidth);
-  shell.addCommand(F("isWriting <num>"), setWrite);//drawLine
-  shell.addCommand(F("drawLine <num>"), drawLine);//drawLine
 }

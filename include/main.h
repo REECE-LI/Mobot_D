@@ -5,8 +5,9 @@
 #include "SCServo.h"
 #include "Servo16.h"
 #include "Robot.h"
-#include "picture.h"
 #include "Wire.h"
+#include "ScaraController.h"
+
 
 #define NUM_LEDS 8
 #define DATA_PIN 41
@@ -64,7 +65,7 @@
 #define LIMIT_PIN_1 17
 #define LIMIT_PIN_2 18
 
-#define USER_PIN   0 
+#define USER_PIN   0
 #define DOWN_BIT   BIT0
 #define UP_BIT     BIT1
 #define RUN_BIT    BIT2
@@ -72,31 +73,39 @@
 
 #define SLAVE_ADDRESS 0x08
 
-typedef struct 
-{
-  union 
-  {
-    uint8_t data[24];
-    struct 
-    {
-      int x;
-      int y;
-      float angle;
+typedef struct {
+    union {
+        uint8_t data[24];
 
-      float target_x;
-      float target_y;
-      float target_z;
+        struct {
+            int x;
+            int y;
+            float angle;
+
+            float target_x;
+            float target_y;
+            float target_z;
+        };
     };
-    
-  };
-  /* data */
-}CamData_t;
+
+    /* data */
+} CamData_t;
 
 extern SMS_STS sms_sts;
 extern CRGB leds[NUM_LEDS];
-extern Servo gdw;
-extern Robot mobot;//(&chassis, &armR);
-extern uint8_t moveTimes;
-extern uint8_t fontWidth;
-extern uint8_t isWriting;
+extern Robot mobot;
+extern ScaraController armR;
+
+
+void ChassisControlTask(void *pvParameters);
+
+void SerialTask(void *pvParameters);
+
+void ArmControlTask(void *pvParameters);
+
+void StepperTask(void *pvParameters);
+
+void click(void);
+
+
 #endif // !_MAIN_H
