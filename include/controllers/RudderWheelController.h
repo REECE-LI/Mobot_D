@@ -29,10 +29,10 @@ public:
 
     PIDController<float> _velPID;
     PIDController<float> _vspinPID;
-protected:
+// protected:
 
 
-private:
+// private:
 
     void setWheelAngle(float targetAngle);
     void setWheelAngle(uint8_t id, float targetAngle);

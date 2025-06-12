@@ -7,6 +7,8 @@
 #include "ChassisController.h"
 #include "ArmController.h"
 #include <FastLED.h>
+#include <RudderWheelController.h>
+
 #include "Wire.h"
 
 #define RotateAngle (-4) // 5 degree
@@ -16,7 +18,7 @@
 typedef struct {
     float x;
     float y;
-    float angle;
+    int16_t angle;
 } Coordinate_t;
 
 
@@ -36,27 +38,13 @@ class Robot {
 public:
     Robot();
 
-    Robot(ChassisController *chassis, ArmController *arm);
+    Robot(RudderWheelController *rudder, ArmController *arm);
 
     void init(void);
 
-    void moveChassis(float vx, float vy);
-
-    void moveChassis(float vx, float vy, float spin);
-
-    bool moveChassisTo(float x, float y);
-
-    bool moveChassisTo(float x, float y, float angle);
-
-    void stopChassis(void);
 
     void goHome();
 
-    void goCharge();
-
-    void setChassisActualValue(float actualX, float actualY, float actualAngle);
-
-    void setArmZBound(int up, int down);
 
     bool moveArmTo(float x, float y, float z);
 
@@ -81,40 +69,54 @@ public:
 
     void blinkRGB(uint16_t time);
 
-    void drawPoint(uint16_t x, uint16_t y);
+    void WriteWord(uint8_t _ID);
 
-    void draw64x64(uint8_t ((*data)[8]), uint8_t armInterval);
 
-    void draw16x16(uint8_t ((*data)[2]));
+    // float ChassisTargetX = 800.0f;
+    // float ChassisTargetY = 600.0f;
+    int16_t ChassisTargetAngle = 330.0f;
+    //
+    // float ChassisActualX = 800.0f;
+    // float ChassisActualY = 600.0f;
+    int16_t ChassisActualAngle = 0.0f;
 
-    void draw8x8(uint8_t (*data));
+    float chassisConvertAngle = 0.0f;
 
-    void drawPicture(float startX, float startY, float drawX, float drawY, uint16_t width, uint16_t hight,
-                     uint8_t *data);
+    typedef struct
+    {
+        float kp, ki, kd;
+        float vError, vErrorLast;
+        float outputKp, outputKi, outputKd;
+        float integralRound;
+        float integralRemainder;
+        float output;
 
-    void drawPictureHight16(float startX, float startY, uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data);
 
-    void drawPictureHight8(float startX, float startY, uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data);
+        float errorBound; // 错误限制
+        float outputBound; // 输出限制
+    } PID_t;
 
-    void drawLoop(float startX, float startY, uint16_t width, uint16_t hight, float drawX, float drawY, uint8_t pen);
+    struct wheelVel_t {
+        int16_t LeftVel = 0;
+        int16_t RightVel = 0;
+    };
 
-    void takePen(DrawColor_t id);
+    struct wheelPos_t {
+        int64_t LeftPos = 0;
+        int64_t RightPos = 0;
+    };
 
-    void givePen(DrawColor_t penId);
+    struct Pos_t {
+        float x = 0;
+        float y = 0;
+        bool isWrite = false;
+    };
 
-    bool sendChangeCmd(DrawColor_t id, PenState_t state);
-
-    bool receiveChangeACK(char *buff);
-
-    int8_t findStartX(uint16_t width, uint16_t hight, uint8_t drawX, uint8_t *data);
-
-    float ChassisTargetX = 800.0f;
-    float ChassisTargetY = 600.0f;
-    float ChassisTargetAngle = 330.0f;
-
-    float ChassisActualX = 800.0f;
-    float ChassisActualY = 600.0f;
-    float ChassisActualAngle = 330.0f;
+    wheelVel_t targetVel;
+    wheelVel_t wheelSpeed;
+    Pos_t targetPos;
+    Pos_t actualPos;
+    Pos_t readyPos;
 
     float ArmTargetX = 70.0f;
     float ArmTargetY = 70.0f;
@@ -139,7 +141,7 @@ public:
     uint8_t *_drawBuff[4] = {NULL};
 
 
-    ChassisController *_chassis = NULL;
+    RudderWheelController *_rudder = NULL;
     ArmController *_arm = NULL;
 
     float rotateRads[4] = {
@@ -147,7 +149,44 @@ public:
         sinf(RotateRad), cosf(RotateRad)
     };
 
-private:
+
+
+
+    PID_t leftVel = {0};
+    PID_t rightVel = {0};
+    PID_t robotPosUp = {0};
+    PID_t robotPosDown = {0};
+    // 这个是调整轮子的差速 来控制自身原地旋转的PID
+    PID_t robotAngle = {0};
+    // 这个是调整舵轮的PID 来控制舵轮的角度
+    PID_t servoPos = {0};
+
+
+    PID_t robotLeftPos = {0};
+    PID_t robotRightPos = {0};
+
+    wheelPos_t targetPosWheel;
+
+    wheelPos_t actualPosWheel;
+
+
+    float PidTick(PID_t *pid, float target, float actual);
+
+    //    float PidTick(PID_t *pid, float target, float actual);
+
+    float Distance;
+
+    float servoAngleOffset = 0;
+
+    int16_t Speed = 0;
+
+    int16_t rollAngle;
+
+    bool dir;
+
+    bool en;
+
+// private:
     uint8_t drawBuffer[64][8] = {0};
     uint8_t drawBuffer16[16][2] = {0};
     uint8_t drawBuffer8[8] = {0};

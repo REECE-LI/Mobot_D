@@ -172,19 +172,14 @@ int draw_Pic(int argc, char **argv) {
         auto x = atoi(argv[2]);
         auto y = atoi(argv[3]);
         // mobot.drawLoop(700, 100, 288, 160, x, y, num);
-        mobot.drawLoop(700, 100, 80, 80, x, y, num);
+        // mobot.drawLoop(700, 100, 80, 80, x, y, num);
     }
     return 0;
 }
 
 int move_To(int argc, char **argv) {
     if (argc == 4) {
-        mobot.ChassisTargetX = atof(argv[1]);
-        mobot.ChassisTargetY = atof(argv[2]);
-        mobot.ChassisTargetAngle = atof(argv[3]);
 
-        mobot.moveChassisTo(mobot.ChassisTargetX, mobot.ChassisTargetY, mobot.ChassisTargetAngle);
-        mobot.stopChassis();
     }
     return 0;
 }
@@ -211,8 +206,8 @@ int move_Get(int argc, char **argv) {
         auto y = atof(argv[2]);
         auto o = atof(argv[3]);
         sprintf(buff, "pen %d 1", Pen);
-        mobot.moveChassisTo(x, y, o);
-        mobot.stopChassis();
+        // mobot.moveChassisTo(x, y, o);
+        // mobot.stopChassis();
         for (uint i = 0; i < 5; i++) {
             Wire.beginTransmission(SLAVE_ADDRESS);
             Wire.print(buff);
@@ -238,23 +233,23 @@ int STScenter(int argc, char **argv) {
 
 
 int changePen(int argc, char **argv) {
-    if (argc == 3) {
-        char buff[7];
-        Pen = atoi(argv[1]);
-        auto pos = atoi(argv[2]);
-
-        mobot.sendChangeCmd((DrawColor_t) Pen, (PenState_t) pos);
-    } else if (argc == 2) {
-        Pen = atoi(argv[1]);
-        mobot.takePen((DrawColor_t) Pen);
-    }
+    // if (argc == 3) {
+    //     char buff[7];
+    //     Pen = atoi(argv[1]);
+    //     auto pos = atoi(argv[2]);
+    //
+    //     mobot.sendChangeCmd((DrawColor_t) Pen, (PenState_t) pos);
+    // } else if (argc == 2) {
+    //     Pen = atoi(argv[1]);
+    //     mobot.takePen((DrawColor_t) Pen);
+    // }
     return 0;
 }
 
 int takePen(int argc, char **argv) {
     if (argc == 2) {
         Pen = atoi(argv[1]);
-        mobot.takePen((DrawColor_t) Pen);
+        // mobot.takePen((DrawColor_t) Pen);
     }
     return 0;
 }
@@ -262,7 +257,7 @@ int takePen(int argc, char **argv) {
 int givePen(int argc, char **argv) {
     if (argc == 2) {
         Pen = atoi(argv[1]);
-        mobot.givePen((DrawColor_t) Pen);
+        // mobot.givePen((DrawColor_t) Pen);
     }
     return 0;
 }
@@ -274,7 +269,7 @@ int move(int argc, char **argv) {
         auto y = atof(argv[2]);
         auto o = atof(argv[3]);
 
-        mobot.moveChassis(x, y, o);
+        // mobot.moveChassis(x, y, o);
     }
     return 0;
 }
@@ -283,7 +278,7 @@ int turn(int argc, char **argv) {
     if (argc == 2) {
         auto o = atof(argv[1]);
 
-        mobot._chassis->turn(o);
+
     }
     return 0;
 }
@@ -292,7 +287,7 @@ int turnTo(int argc, char **argv) {
     if (argc == 2) {
         auto o = atof(argv[1]);
 
-        mobot._chassis->turnTo(o);
+
     }
     return 0;
 }

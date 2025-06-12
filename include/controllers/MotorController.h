@@ -27,7 +27,7 @@ public:
     PIDController<int> _velPID;
     PIDController<int> _posPID;
    
-private:
+// private:
 
     // double _p = 1.0;
     // double _i = 0;

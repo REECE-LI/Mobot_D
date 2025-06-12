@@ -16,7 +16,7 @@ public:
     void setPositionSync(uint8_t ID[], uint8_t IDN, int16_t Position[], uint16_t Speed[], uint8_t ACC[]);
     int getPosition(uint8_t id);
 
-private:
+// private:
     SMS_STS _servo_sts;
     int16_t _targetVelocity;
     int64_t _targetPosition;
