@@ -116,13 +116,14 @@ void setup() {
 
     // mobot.targetPos.x = 269;
     // mobot.targetPos.y = 120;
+    mobot.rollAngle = 90;
     // mobot._arm->moveZ(mobot.ArmDown);
     // xTaskCreatePinnedToCore(SerialTask, "Serial", 1024 * 4, NULL, 3, NULL, 0);
     // xTaskCreatePinnedToCore(ArmControlTask, "ArmControl", 1024 * 5, NULL, 3, NULL, 1);
     xTaskCreatePinnedToCore(ChassisControlTask, "ChassisControl", 1024 * 8, NULL, 3, NULL, 1);
 }
 
-uint8_t writeIndex = 0;
+uint8_t writeIndex = 1;
 bool isWrite = false;
 
 void loop() {
@@ -222,6 +223,8 @@ void click(void) {
     mobot.moveArmZ(-1);
 #else
     mobot.WriteWord(writeIndex++);
+    mobot.ArmMoveUp();
+
 #endif
 }
 
@@ -247,7 +250,7 @@ void receiveEvent(int numBytes) {
     mobot.Speed = (joyX * joyX + joyY * joyY) * 0.001;
     if (j - lastJ) {
         writeIndex += 1;
-        isWrite =false;
+        isWrite = false;
     }
 
     // Serial1.println(atan2(joyX,joyY));

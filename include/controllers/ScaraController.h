@@ -36,8 +36,8 @@ public:
     uint8_t _servo1ID = 3;
     uint8_t _servo2ID = 4;
 
-    const uint16_t _servo1BaseAngle = 3362;//1836 + 1092; // (1832+1092);// base 2008 1852
-    const uint16_t _servo2BaseAngle = 2014;//2745 + 155; //(2080+155);// base 1845 2552
+    const uint16_t _servo1BaseAngle = 3364;//1836 + 1092; // (1832+1092);// base 2008 1852
+    const uint16_t _servo2BaseAngle = 1757;//2745 + 155; //(2080+155);// base 1845 2552
 
     const int16_t _theta1Base = 128.9; //130
     const int16_t _theta2Base = 95.8;
