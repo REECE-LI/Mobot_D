@@ -123,7 +123,7 @@ void setup() {
     xTaskCreatePinnedToCore(ChassisControlTask, "ChassisControl", 1024 * 8, NULL, 3, NULL, 1);
 }
 
-uint8_t writeIndex = 1;
+uint8_t writeIndex = 50;
 bool isWrite = false;
 
 void loop() {
