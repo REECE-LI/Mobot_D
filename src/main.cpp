@@ -126,7 +126,7 @@ uint8_t writeIndex = 0;
 bool isWrite = false;
 
 void loop() {
-#if 0
+#if 1
     shell.executeIfInput();
     button.tick();
     delay(10);
@@ -221,7 +221,7 @@ void click(void) {
     }
     mobot.moveArmZ(-1);
 #else
-    mobot.WriteWord(86);
+    mobot.WriteWord(writeIndex++);
 #endif
 }
 
